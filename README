@@ -1,0 +1,113 @@
+2.2.7
+* Making Eshell more flexible and allowing optional includes (rmark)
+* Adding the allow_override option to EnvVars (rmark)
+
+2.2.6
+* No longer uses Win32::GUI to hide the console window, new funciton HideConsole (aburke)
+* Updated -output flag with better output filtering and uppercase env vars (gevans)
+
+2.2.5
+* Do not process certain env vars based on hash table $g_SkipProcessingVariables. (aburke)
+
+2.2.4
+* Bug fix, ParseIncludes was not setting $include from ProcessValue's return value. (aburke)
+
+2.2.3
+* Bug fix, ESHELL_COMMAND_LINE needed to be setup the new env before the commandline was parsed. (rmark)
+
+2.2.2
+* Changes to process values after all EnvVars and Configs have been parsed (rmark)
+
+2.2.1
+* Small change to environment variable processing order to make config more intuitive
+
+2.2.0
+!!!NOTE!!!: Configuration format changes with this release.
+
+* Major refactoring and simplification
+
+* Store a base64-encoded backup of the base environment in the ESHELL_ENV_BACKUP environment variable
+** Allows for much saner spawning of new eshells from within an existing shell
+
+* Add the ability to include configs, eg:
+
+  <Include>some/relative/include.xml</Include>
+  <Include>%AN_ENVIRONMENT_VARIABLE%/otherconfig.xml</Include>
+
+* Remove the top-level 'EnvironmentVariables' container, eg:
+
+  <EnvironmentVariables>
+    <EnvVar ...>
+    <EnvVar ...>
+  </EnvironmentVariables>
+  
+  becomes:
+  
+  <EnvVar ...>
+  <EnvVar ...>
+
+* Remove the 'PathSettings' section of the config
+** Instead, you can directly modify the path, eg:
+
+  <EnvVar variableName="PATH" value="%PATH%;/some/new/path" />
+  
+* Remove the 'PerlSettings' section of the config
+** Instead, you can directly set the library paths, eg:
+
+  <EnvVar variableName="PERL5LIB" value="%PERL5LIB%;/some/perl/dir" />
+
+* Remove support for UserSettings.xml
+** Instead, users should use the '-set' argument on shortcuts, eg:
+
+  eshell.pl ... -set SOMEVARIABLE=somevalue
+  
+* Support recursive parentage for configurations
+** There used to be a limit to the depth of parentage, no more...
+
+* Add aliases for environment variables, eg:
+
+    <EnvironmentVariableAlias aliasName="code" envVarName="PROJECT_CODE" />
+  
+  makes:
+  
+    eshell.pl ... -code blah
+    
+  equivalent to:
+  
+    eshell.pl ... -set PROJECT_CODE=blah
+  
+
+1.0.11
+* Making -exec return the error code returned by the command.
+
+1.0.10
+* Making -exec work with commands that have spaces in the parameters
+
+1.0.7
+* Improvements to auto-update
+** Ability to force an update, even if people have newer versions
+*** Should allow for downgrading if necessary
+
+1.0.6
+* Minor code cleanup 
+** renamed $config to $settings 
+** moved "parse commandline options" section of main into new sub ParseCommandline
+
+1.0.5
+* make ESHELL env var = the version; get rid of legacy ENVSHELL variable
+
+1.0.4
+* move title formats to env var ESHELL_TITLE_FORMAT and ESHELL_TITLE
+
+1.0.3
+* Require Getopt::Long 2.36
+
+1.0.2
+* Fix absolute paths to config files
+
+1.0.1
+* Fix handling of 'Config' elements
+** Previously, having only a single config would cause an error
+
+1.0.0
+* Initial Release
